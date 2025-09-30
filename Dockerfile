@@ -12,7 +12,7 @@ COPY package*.json ./
 RUN npm ci --only=production
 
 # Copia código (server.js, etc.)
-COPY . /app
+COPY ./server.js /app
 
 # Copia estáticos al docroot de Nginx (ajusta si tus estáticos viven en /app/public)
 # Si todo tu sitio está en la raíz, deja esto; idealmente usa /public para no duplicar.
