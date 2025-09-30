@@ -17,7 +17,7 @@ COPY . /app
 # Copia estáticos al docroot de Nginx (ajusta si tus estáticos viven en /app/public)
 # Si todo tu sitio está en la raíz, deja esto; idealmente usa /public para no duplicar.
 COPY ./assets /usr/share/nginx/html/assets
-COPY ./index.html ./favicon.ico /usr/share/nginx/html/
+COPY ./index.html /usr/share/nginx/html/
 
 # Nginx config (tu archivo)
 RUN rm -f /etc/nginx/conf.d/default.conf /etc/nginx/nginx.conf
