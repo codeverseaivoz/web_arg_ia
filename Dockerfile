@@ -1,12 +1,33 @@
-FROM nginx:alpine
+FROM node:18-alpine
 
-RUN rm /etc/nginx/conf.d/default.conf
-RUN rm /etc/nginx/nginx.conf
+# Instala Nginx
+RUN apk add --no-cache nginx
 
+# Crea directorios
+WORKDIR /app
+RUN mkdir -p /run/nginx /usr/share/nginx/html
+
+# Instala dependencias de Node
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Copia tu código (server.js, etc.)
+COPY . /app
+
+# Copia estáticos al docroot de Nginx
+COPY ./index.html /usr/share/nginx/html/
+
+# Configuración de Nginx
+RUN rm -f /etc/nginx/conf.d/default.conf /etc/nginx/nginx.conf
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY . /usr/share/nginx/html
 
-EXPOSE 80
-EXPOSE 443
+# Puertos expuestos
+EXPOSE 80 3000
 
-CMD ["nginx", "-g", "daemon off;"]
+# Script de arranque
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+ENV PORT=3000 NODE_ENV=production
+
+CMD ["/start.sh"]
