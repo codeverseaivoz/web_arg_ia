@@ -1957,7 +1957,7 @@
             const payload = Object.fromEntries(fd.entries());
 
             try {
-            const res = await fetch("http://localhost:3000/api/web_info_users_arg", {
+            const res = await fetch("/api/web_info_users_arg", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
