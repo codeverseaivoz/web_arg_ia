@@ -2,7 +2,12 @@
 import express from "express";
 import cors from "cors";
 import pkg from "pg";
+import path from "path";
+import { fileURLToPath } from "url";
 const { Pool } = pkg;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
@@ -49,6 +54,20 @@ app.get("/api/web_info_users_arg", async (req, res) => {
     res.status(500).json({ error: "Error al obtener datos" });
   }
 });
+
+app.get('/', async(req,res)=> {
+  try{
+    res.sendFile(path.join(__dirname, "index.html"));
+  }catch(err){
+    console.error(err);
+    res.status(404).json({ error: "Error al obtener index" });
+  }
+});
+
+app.get('/app', async(req,res)=> {
+  return res.status(200).send({"message":"OK"});
+});
+
 
 
 const PORT = process.env.PORT || 3000;
