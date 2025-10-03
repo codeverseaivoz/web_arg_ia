@@ -1,12 +1,13 @@
-FROM nginx:alpine
+FROM node:20
 
-RUN rm /etc/nginx/conf.d/default.conf
-RUN rm /etc/nginx/nginx.conf
+WORKDIR /usr/src/app
 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY . /usr/share/nginx/html
+COPY package*.json ./
 
-EXPOSE 80
-EXPOSE 443
+RUN npm ci --only=production
 
-CMD ["nginx", "-g", "daemon off;"]
+COPY . .
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]
